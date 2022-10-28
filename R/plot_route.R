@@ -6,6 +6,7 @@
 #'
 #'
 #' @param addresses the stops on your route
+#' @param geo_method method as in tidygeocoder::geo()
 #' @param how routing profile(s) to use, e.g. "car", "bike" or "foot" (when using the routing.openstreetmap.de test server). n-1 routing profiles are required for for n addresses
 #' @param colour what colour you want the route line to be colored
 #' @param opacity line opacity - a value between 0 and 1
@@ -33,6 +34,7 @@
 #' @examples
 #'
 #' viz<- plot_route(c("Toronto","Niagara Falls","Monsey"),
+#'                   geo_method = "arcgis",
 #'                   how="car",
 #'                   font="Courier",
 #'                   label_position="right",
@@ -44,6 +46,7 @@
 
 
 plot_route<-function(addresses,
+                      geo_method = "arcgis",
                       how=c("car","bike","foot"),
                       colour="black",
                       opacity=1,
@@ -59,7 +62,7 @@ plot_route<-function(addresses,
                       zoomControl=c(0.1,0.1,-0.1,-0.1)){
 
   address_single <- tibble(singlelineaddress = addresses) %>%
-    geocode(address=singlelineaddress,method = 'arcgis') %>%
+    geocode(address=singlelineaddress, method = geo_method) %>%
     transmute(id = singlelineaddress,
               lon=long,
               lat=lat)
@@ -70,7 +73,7 @@ plot_route<-function(addresses,
   for(i in 1:(nrow(address_single)-1)){
     trip[[i]] <- osrmRoute(src=address_single[i,2:3] %>% c %>% unlist,
                            dst=address_single[i+1,2:3] %>% c %>% unlist,
-                           returnclass="sf",
+                           #returnclass="sf",
                            overview="full",
                            osrm.profile = how[i] )
   }
@@ -114,3 +117,6 @@ plot_route<-function(addresses,
 
   m
 }
+
+
+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

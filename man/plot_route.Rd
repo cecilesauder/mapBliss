@@ -6,6 +6,7 @@
 \usage{
 plot_route(
   addresses,
+  geo_method = "arcgis",
   how = c("car", "bike", "foot"),
   colour = "black",
   opacity = 1,
@@ -23,6 +24,8 @@ plot_route(
 }
 \arguments{
 \item{addresses}{the stops on your route}
+
+\item{geo_method}{method as in tidygeocoder::geo()}
 
 \item{how}{routing profile(s) to use, e.g. "car", "bike" or "foot" (when using the routing.openstreetmap.de test server). n-1 routing profiles are required for for n addresses}
 
